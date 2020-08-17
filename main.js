@@ -23,7 +23,14 @@ async function searchSong(song) {
 const display_data = document.getElementById('display_data');
 function displayShow(data){
     display_data.innerHTML = `${data.data.map(song =>`
-        <div class="single-result row align-items-center my-3 p-3"><div class="col-md-9"><h3 class="lyrics-name">${song.title}</h3><p class = "author lead" >Album by<span>${song.artist.name}</span></p></div><div class = "col-md-3 text-md-right text-center"><button data-artist ="${song.artist.name}" data-title = "${song.title}"  class = "btn btn-success">Get Lyrics</button></div></div>
+        <div class="single-result row align-items-center my-3 p-3"><div class="col-md-9"><h3 class="lyrics-name">${song.title}</h3><p class = "author lead" >Album by<span>${song.artist.name}</span></p><p style="color: #c0ffcf;">Artist Rank: <span>${song.rank}</span></p>
+        
+        </div><div class = "col-md-3 text-md-right text-center"><button data-artist ="${song.artist.name}" data-title = "${song.title}"  class = "btn btn-success">Get Lyrics</button></div>
+        <audio controls>
+        <source src="${song.preview}" type="audio/ogg">
+        <source src="${song.preview}" type="audio/mpeg">
+        </audio>
+        </div>
         `).join('')}
         `;
 }
