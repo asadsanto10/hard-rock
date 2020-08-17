@@ -1,12 +1,10 @@
 const searchButton = document.getElementById('search_btn');
-const songLyricsAPI = 'https://api.lyrics.ovh';
-
+const songLyricsAPI = 'https://api.lyrics.ovh'; //lyric main API
 
 // search button
 searchButton.addEventListener('click', e => {
     e.preventDefault();
     const searchValue = document.getElementById('search').value.trim();
-
     if (!searchValue) {
         alert("Please search the input");
     } else {
@@ -22,15 +20,36 @@ async function searchSong(song) {
 }
 
 // dispalay show data
-const display_data = document.getElementById('display');
+const display_data = document.getElementById('display_data');
 function displayShow(data){
     display_data.innerHTML = `${data.data.map(song =>`
-    
-        <p class="author lead">
-        <strong>${song.title}</strong>
-        Album by<span>${song.artist.name}</span>
-        <button style ="float: right; margin: 0 0 0 120px; padding: 5px 20px;" class = "btn btn-success" data-artist ="${song.artist.name}" data-title = "${song.title}" >Get Lyrics
-        </button></p>
+        <div class="single-result row align-items-center my-3 p-3"><div class="col-md-9"><h3 class="lyrics-name">${song.title}</h3><p class = "author lead" >Album by<span>${song.artist.name}</span></p></div><div class = "col-md-3 text-md-right text-center"><button data-artist ="${song.artist.name}" data-title = "${song.title}"  class = "btn btn-success">Get Lyrics</button></div></div>
         `).join('')}
         `;
+}
+
+// get lyrics button
+const getData = document.getElementById('get-data');
+display_data.addEventListener('click', e => {
+    const clickedElement = e.target;
+    if (clickedElement.tagName === 'BUTTON') {
+        const artist = clickedElement.getAttribute('data-artist');
+        const songTitle = clickedElement.getAttribute('data-title');
+        // console.log(artist);
+        // console.log(songTitle);
+        getLyrics(artist, songTitle)
+    }
+})
+
+//get lyrics show
+const getLyricText = document.getElementById('get-lyrics');
+async function getLyrics(artist, songTitle) {
+    const res = await fetch(`${songLyricsAPI}/v1/${artist}/${songTitle}`);
+    const data = await res.json();
+    const lyrics = data.lyrics.replace(/(\r\n|\r|\n)/g, '<br>');
+    //console.log(lyrics);
+    getLyricText.innerHTML = `
+        <h2 class ="text-success mb-4">${songTitle} - ${artist}</h2><pre class ="lyric text-white">${lyrics}</pre>
+    
+    `;
 }
