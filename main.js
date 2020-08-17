@@ -8,9 +8,9 @@ searchButton.addEventListener('click', e => {
     const searchValue = document.getElementById('search').value.trim();
 
     if (!searchValue) {
-        alert("There is nothing to search")
+        alert("Please search the input");
     } else {
-        searchSong(searchValue)
+        searchSong(searchValue + "&limit=10");
     }
 });
 
@@ -22,12 +22,15 @@ async function searchSong(song) {
 }
 
 // dispalay show data
-const display_data = document.getElementById('display_data');
+const display_data = document.getElementById('display');
 function displayShow(data){
-    let display = '';
-    data.data.forEach(song =>{
-        display += `<p class="author lead"><strong>${song.title}</strong> Album by <span>${song.artist.name}</span> <button style="float: right; margin: 0 0 0 120px; padding: 5px 20px;" class="btn btn-success" data-artist="${song.artist.name}" data-title="${song.title}" >Get Lyrics</button></p>`
-    });
-    // console.log(display);
-    display_data.innerHTML = display;
+    display_data.innerHTML = `${data.data.map(song =>`
+    
+        <p class="author lead">
+        <strong>${song.title}</strong>
+        Album by<span>${song.artist.name}</span>
+        <button style ="float: right; margin: 0 0 0 120px; padding: 5px 20px;" class = "btn btn-success" data-artist ="${song.artist.name}" data-title = "${song.title}" >Get Lyrics
+        </button></p>
+        `).join('')}
+        `;
 }
